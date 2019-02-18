@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.1/d3.js"></script>
+  <style>
+    html,
+    body {
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      background: black;
+    }
+
+    #exoplanets-container {
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
+</head>
+
+<body>
+  <svg id="exoplanets-container">
+
+  </svg>
+  <script>
+    d3.json("http://localhost:3000/exoplanets").then((exoplanets) => {
+
+      var posX = 0
+      var posY = 0
+
+      exoplanets.forEach((exo, idx) => {
+
+        posX += 70
+
+        if (idx % 10 === 0) {
+          posY += 50
+          posX = 0
+        }
+
+        d3
+          .select("#exoplanets-container")
+          .append("circle")
+          .attr("r", () => {
+            return exo.pl_radj * 10
+          })
+          .attr("cx", ()=>{
+            return posX
+          })
+          .attr("cy", posY)
+          .attr("fill", `rgba(${Math.random () * 255}, ${Math.random () * 255}, ${Math.random () * 255}, 0.8)`)
+          .append("title")
+          .text(`${exo.pl_name} ::: ${exo.pl_radj}`)
+      })
+
+    })
+
+  </script>
+</body>
+
+</html>
